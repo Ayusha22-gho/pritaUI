@@ -1,7 +1,5 @@
 import './App.css';
 import {  Routes, Route } from "react-router-dom";
-import Branch from "./components/WithoutUTC/WithoutUTC"
-import Landing from "./components/Landing/landing"
 import Land from './components/Landing/Land';
 import HomeScreen from "./components/HomeScreen/homescreen"
 import BranchTest from "./components/BranchTesting/BranchTest"

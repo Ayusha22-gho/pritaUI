@@ -3,6 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const { exec } = require('child_process');
 const { spawn } = require('child_process')
+const xlsx = require('xlsx');
 const fs = require('fs')
 const path = require('path')
 const app = express();
@@ -16,6 +17,8 @@ app.use(bodyParser.json());
 
 let preSITBranchName = ''
 let SITBranchName = ''
+const excelPathWithUTC = path.join(__dirname,'OutputRuleNames','output-file.xlsx')
+const excelPathWithoutUTC = path.join(__dirname,'OutputRuleNames','outputRuleWithoutTC-file.xlsx')
 
 app.get('/run-command',(req,res) => {
    res.send('Welcome to run command')
@@ -29,7 +32,7 @@ app.post('/run-command', (req, res) => {
  if (!jarPath) {
    return res.status(400).send({ error: 'Jar path is required' });
  }
- const command = `java -jar ${jarPath}DemoMockup1.jar`;
+ const command = `java -jar ${jarPath}SavingRuleNames.jar`;
  exec(command, (error, stdout, stderr) => {
    if (error) {
      return res.status(500).send({ error: error.message });
@@ -65,7 +68,28 @@ app.post('/sit-branch-name',(req,res)=>{
   res.status(200).send({message:'Created Input File With Branch Name',SITBranchName})
 })
 
+//Function to read data from Excel file and convert it to JSON
+function readExcelData(excelFilePath) {
+   const workbook = xlsx.readFile(excelFilePath);
+   const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+   const jsonData = xlsx.utils.sheet_to_json(worksheet);
+   console.log("jsondata",jsonData)
+   return jsonData;
+}
 
+// API endpoint to fetch Excel data
+app.get('/api/excel-data', (req, res) => {
+// Path to your Excel file
+  const data = readExcelData(excelPathWithUTC);
+  res.json(data);  // Send JSON data to frontend
+});
+
+app.get('/api/excel-without-tc-data', (req, res) => {
+  // Path to your Excel file
+    const data = readExcelData(excelPathWithoutUTC);
+    res.json(data);  // Send JSON data to frontend
+  });
+  
 // app.post('/run-command',(req,res)=>{
 //   const { jarPath } = req.body;
 //   const jarFilePath = `${jarPath}SavingRuleNames.jar`;

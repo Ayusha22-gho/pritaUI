@@ -1,4 +1,5 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
+import axios from "axios";
 import NavBar from "../NavBar/navbar";
 import Card from "@mui/material/Card";
 import Button from "@mui/material/Button";
@@ -24,6 +25,18 @@ const rows = [
 
 export default function WithoutUTC({ heading }) {
   let navigate = useNavigate();
+  const [excelData, setExcelData] = useState([]);
+
+  useEffect(() => {
+    // Fetch data from backend
+    axios.get('http://localhost:8080/api/excel-without-tc-data')
+      .then(response => {
+        setExcelData(response.data);  // Set the data into state
+      })
+      .catch(error => {
+        console.error("There was an error fetching the Excel data!", error);
+      });
+  }, []);
 
   return (
     <div class="homeContainer">
@@ -42,23 +55,20 @@ export default function WithoutUTC({ heading }) {
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  <TableCell sx={{"font-weight":"700"}}>SI#</TableCell>
-                  <TableCell align="right" sx={{"font-weight":"700"}}>Branch Name</TableCell>
-                  <TableCell align="right" sx={{"font-weight":"700"}}>Rules without Unit Test Cases)</TableCell>
+                  {excelData.length > 0 &&
+                        Object.keys(excelData[0]).map((key) => (
+                          <TableCell key={key} sx={{'font-weight': '700'}}>{key}</TableCell>
+                        ))}
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                  >
-                    <TableCell component="th" scope="row">
-                      {row.id}
-                    </TableCell>
-                    <TableCell align="right">{row.branchName}</TableCell>
-                    <TableCell align="right">{row.testCases}</TableCell>
-                  </TableRow>
-                ))}
+                {excelData.map((row, index) => (
+                      <TableRow key={index}>
+                        {Object.values(row).map((cell, idx) => (
+                          <TableCell key={idx}>{cell}</TableCell>
+                        ))}
+                      </TableRow>
+                    ))}
               </TableBody>
             </Table>
           </TableContainer>

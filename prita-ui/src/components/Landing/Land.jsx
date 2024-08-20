@@ -8,6 +8,7 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Modal from "../Modal/modal";
+import "./landing.css"
 
 const Item = styled(motion(Paper))(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -29,6 +30,7 @@ export default function Land() {
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={1} mt={8} alignItems={"center"}>
         <Grid item xs={6}>
+          <img src ="Cognizant-Logo.png" className="launchLogo"/>
           <Typography variant="h3" align="center" fontWeight="bold">
             Pega Rule Impact
           </Typography>

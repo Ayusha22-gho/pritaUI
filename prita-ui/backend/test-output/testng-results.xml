@@ -1,75 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results skipped="0" failed="1" total="1" passed="0">
+<testng-results skipped="0" failed="0" total="1" passed="1">
   <reporter-output>
   </reporter-output>
-  <suite name="Command line suite" duration-ms="8413" started-at="2024-08-18T13:53:20Z" finished-at="2024-08-18T13:53:28Z">
+  <suite name="Command line suite" duration-ms="65587" started-at="2024-08-20T18:20:16Z" finished-at="2024-08-20T18:21:22Z">
     <groups>
     </groups>
-    <test name="Command line test" duration-ms="8413" started-at="2024-08-18T13:53:20Z" finished-at="2024-08-18T13:53:28Z">
-      <class name="com.usbank.pega.DemoMockup">
-        <test-method status="FAIL" signature="DemoMock()[pri:0, instance:com.usbank.pega.DemoMockup@311d617d]" name="DemoMock" duration-ms="8398" started-at="2024-08-18T19:23:20Z" finished-at="2024-08-18T19:23:28Z">
-          <exception class="org.openqa.selenium.WebDriverException">
-            <message>
-              <![CDATA[no such execution context
-  (Session info: chrome=125.0.6422.142)
-Build info: version: '4.8.1', revision: '8ebccac989'
-System info: os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '1.8.0_361'
-Driver info: org.openqa.selenium.chrome.ChromeDriver
-Command: [ebdabf3711921e6d7917dee2a9ffce2e, get {url=https://stackoverflow.com/}]
-Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 125.0.6422.142, chrome: {chromedriverVersion: 125.0.6422.60 (3ac3319bff9f..., userDataDir: C:\Windows\SystemTemp\scope...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:54993}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: WINDOWS, proxy: Proxy(), se:cdp: ws://localhost:54993/devtoo..., se:cdpVersion: 125.0.6422.142, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
-Session ID: ebdabf3711921e6d7917dee2a9ffce2e]]>
-            </message>
-            <full-stacktrace>
-              <![CDATA[org.openqa.selenium.WebDriverException: no such execution context
-  (Session info: chrome=125.0.6422.142)
-Build info: version: '4.8.1', revision: '8ebccac989'
-System info: os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '1.8.0_361'
-Driver info: org.openqa.selenium.chrome.ChromeDriver
-Command: [ebdabf3711921e6d7917dee2a9ffce2e, get {url=https://stackoverflow.com/}]
-Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 125.0.6422.142, chrome: {chromedriverVersion: 125.0.6422.60 (3ac3319bff9f..., userDataDir: C:\Windows\SystemTemp\scope...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:54993}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: WINDOWS, proxy: Proxy(), se:cdp: ws://localhost:54993/devtoo..., se:cdpVersion: 125.0.6422.142, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
-Session ID: ebdabf3711921e6d7917dee2a9ffce2e
-	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
-	at sun.reflect.NativeConstructorAccessorImpl.newInstance(Unknown Source)
-	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(Unknown Source)
-	at java.lang.reflect.Constructor.newInstance(Unknown Source)
-	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.createException(W3CHttpResponseCodec.java:200)
-	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:133)
-	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:53)
-	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:184)
-	at org.openqa.selenium.remote.service.DriverCommandExecutor.invokeExecute(DriverCommandExecutor.java:167)
-	at org.openqa.selenium.remote.service.DriverCommandExecutor.execute(DriverCommandExecutor.java:142)
-	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:543)
-	at org.openqa.selenium.remote.RemoteWebDriver.get(RemoteWebDriver.java:297)
-	at com.usbank.pega.DemoMockup.DemoMock(DemoMockup.java:27)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
-	at java.lang.reflect.Method.invoke(Unknown Source)
-	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:86)
-	at org.testng.internal.Invoker.invokeMethod(Invoker.java:645)
-	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:822)
-	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1130)
-	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:129)
-	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:112)
-	at org.testng.TestRunner.privateRun(TestRunner.java:782)
-	at org.testng.TestRunner.run(TestRunner.java:632)
-	at org.testng.SuiteRunner.runTest(SuiteRunner.java:366)
-	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:361)
-	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:319)
-	at org.testng.SuiteRunner.run(SuiteRunner.java:268)
-	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
-	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
-	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1244)
-	at org.testng.TestNG.runSuitesLocally(TestNG.java:1169)
-	at org.testng.TestNG.run(TestNG.java:1064)
-	at com.usbank.pega.MainRunnerTest.main(MainRunnerTest.java:12)
-]]>
-            </full-stacktrace>
-          </exception> <!-- org.openqa.selenium.WebDriverException -->
+    <test name="Command line test" duration-ms="65587" started-at="2024-08-20T18:20:16Z" finished-at="2024-08-20T18:21:22Z">
+      <class name="com.usbank.pega.SavingRuleNames">
+        <test-method status="PASS" signature="loginpage()[pri:0, instance:com.usbank.pega.SavingRuleNames@782830e]" name="loginpage" duration-ms="65577" started-at="2024-08-20T23:50:16Z" finished-at="2024-08-20T23:51:22Z">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- DemoMock -->
-      </class> <!-- com.usbank.pega.DemoMockup -->
+        </test-method> <!-- loginpage -->
+      </class> <!-- com.usbank.pega.SavingRuleNames -->
     </test> <!-- Command line test -->
   </suite> <!-- Command line suite -->
 </testng-results>

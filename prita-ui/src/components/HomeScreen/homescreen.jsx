@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "./home.css";
 import axios from "axios";
 import Card from "@mui/material/Card";
@@ -6,17 +6,19 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import NavBar from "../NavBar/navbar";
 import Configure from "../ConfigurePath/Configure";
+import SelectModal from "../Modal/selectModal";
 import { useNavigate } from "react-router-dom";
-
+import { SearchContext } from "../../context/SearchContext";
 
 function HomeScreen({ heading }) {
-  const [numBranches, setNumBranches] = useState(0);
   const [branches, setBranches] = useState([]);
-  const [searchResult, setSearchResult] = useState(null);
+  const { searchResults, setSearchResults } = useContext(SearchContext);
   const [isOpen, setIsOpen] = useState(false);
+  const [rules,setRules] = useState(false)
   const [jarPath, setJarPath] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [command, setCommand] = useState("");
+  const [excelData, setExcelData] = useState([]);
 
   let navigate = useNavigate();
   useEffect(() => {
@@ -43,41 +45,38 @@ function HomeScreen({ heading }) {
     setInputValue("");
   };
 
-  const handleRunClick = () => {
+  const handleRunClick = async () => {
     if (jarPath.trim().length < 1) {
       alert("Please provide the Jar Path.");
       return;
     }
-    alert("Rule scanning is in progress")
+    alert("Rule scanning is in progress");
 
-    axios
+    await axios
       .post("http://localhost:8080/run-command", { jarPath })
       .then((response) => {
         alert("Impacted Rules Without Unit Test Cases  has been completed");
         console.log(response.data);
-        setSearchResult(response.data.stdout);
+        setSearchResults(response.data.stdout);
       })
       .catch((error) => {
         console.error("Error:", error);
         alert(`Error: ${error.message}`);
       });
-
-      
   };
 
-  const saveBranchName = () =>{
-    axios.post('http://localhost:8080/save-branch',{branches})
-    .then((response)=>{
-      alert("Branches Saved")
-      console.log(response.data);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      alert(`Error: ${error.message}`);
-    })
-  }
-
-  
+  const saveBranchName = async () => {
+    await axios
+      .post("http://localhost:8080/save-branch", { branches })
+      .then((response) => {
+        alert("Branches Saved");
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert(`Error: ${error.message}`);
+      });
+  };
 
   const addBranch = () => {
     if (branches.length < 5) {
@@ -89,17 +88,29 @@ function HomeScreen({ heading }) {
     const updatedTabs = [...branches];
     updatedTabs[id] = value;
     setBranches(updatedTabs);
-    console.log(branches)
-   
+    console.log(branches);
   };
   const removeBranch = (index) => {
     // const newTextArea = [...branches];
     // newTextArea.splice(index, 1);
     // setBranches(newTextArea);
-    const removedBranch = branches.filter((_,element) => element !== index);
+    const removedBranch = branches.filter((_, element) => element !== index);
     setBranches(removedBranch);
-    console.log(branches)
-    
+    console.log(branches);
+  };
+  const resetSearchResult = () => {
+    setSearchResults(null);
+  };
+
+  const showImpactedRulesWithUTC = async () => {
+    await axios
+      .get("http://localhost:8080/api/excel-data")
+      .then((response) => {
+        setExcelData(response.data); // Set the data into state
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the Excel data!", error);
+      });
   };
 
   return (
@@ -128,30 +139,33 @@ function HomeScreen({ heading }) {
 
           {branches.map((tab, index) => (
             <>
-            <div key={index} className="branchNameContainer">
-              <span className="branchNumbers">Branch #{index + 1}</span>
-              <textarea
-                value={tab}
-                onChange={(e) => updateBranchContent(index, e.target.value)}
-                rows="2"
-                cols="50"
-              />
-              <button
-                onClick={() => removeBranch(index)}
-                className="branchRemoveButton"
-              >
-                Remove
-              </button>
-            </div>
-            
-             </>
+              <div key={index} className="branchNameContainer">
+                <span className="branchNumbers">Branch #{index + 1}</span>
+                <textarea
+                  value={tab}
+                  onChange={(e) => updateBranchContent(index, e.target.value)}
+                  rows="2"
+                  cols="50"
+                />
+                <button
+                  onClick={() => removeBranch(index)}
+                  className="branchRemoveButton"
+                >
+                  Remove
+                </button>
+              </div>
+            </>
           ))}
-          {branches.length>0 ? (<button  className="branchSaveButton" onClick={saveBranchName}>Save Branch Name</button>):null} 
+          {branches.length > 0 ? (
+            <button className="branchSaveButton" onClick={saveBranchName}>
+              Save Branch Name
+            </button>
+          ) : null}
         </div>
-       
+
         <div className="branchButtons">
           <Configure
-            isOpen ={isOpen}
+            isOpen={isOpen}
             setIsOpen={setIsOpen}
             configureFlag={true}
             handleInputChange={handleInputChange}
@@ -160,7 +174,9 @@ function HomeScreen({ heading }) {
             inputValue={inputValue}
             jarPath={jarPath}
           />
-          <Button variant="contained">RESET</Button>
+          <Button variant="contained" onClick={resetSearchResult}>
+            RESET
+          </Button>
           <Button variant="contained" onClick={handleRunClick}>
             SEARCH IMPACTED RULES
           </Button>
@@ -168,17 +184,48 @@ function HomeScreen({ heading }) {
         </div>
 
         <div>
-          {/* {searchResult && ( */}
+          {searchResults && (
             <>
-            <h3>Search Result</h3>
-          <div className="branchButtons">
-            <Button variant="contained" disbaled>IMPACTED RULES WITH UTC</Button>
-            <Button variant="contained" disabled>VIEW SELECT RULES PAGE</Button>
-            <Button variant="contained" onClick = {()=>navigate("/rules-without-utc")}>IMPACTED RULES WITHOUT UTC</Button>
-          </div>
-          </>
-          {/* )} */}
-          
+              <h3>Search Result</h3>
+              <p>{searchResults}</p>
+              <div>
+                <table>
+                  <thead>
+                    <tr>
+                      {excelData.length > 0 &&
+                        Object.keys(excelData[0]).map((key) => (
+                          <th key={key}>{key}</th>
+                        ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {excelData.map((row, index) => (
+                      <tr key={index}>
+                        {Object.values(row).map((cell, idx) => (
+                          <td key={idx}>{cell}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="branchButtons">
+                <Button variant="contained" onClick={showImpactedRulesWithUTC}>
+                  IMPACTED RULES WITH UTC
+                </Button>
+                <Button variant="outlined" onClick={()=>setRules(true)} >
+                  VIEW SELECT RULES PAGE
+                </Button>
+                {rules && <SelectModal setRules={setRules}/>}
+                <Button
+                  variant="contained"
+                  onClick={() => navigate("/rules-without-utc")}
+                >
+                  IMPACTED RULES WITHOUT UTC
+                </Button>
+              </div>
+            </>
+          )}
         </div>
       </Card>
     </div>
